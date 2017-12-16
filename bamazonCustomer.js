@@ -21,14 +21,14 @@ function validateInput(value) {
 	if (integer && (sign === 1)) {
 		return true;
 	} else {
-		return 'Please enter a whole non-zero number.';
+		return "Please enter a whole non-zero number.";
 	}
 }
 
 // promptUserPurchase will prompt the user for the item/quantity they would like to purchase
 function promptUserPurchase() {
 
-    console.log('___ENTER promptUserPurchase___');
+    console.log('--- promptUserPurchase ---');
     
     inquirer.prompt([
             {
@@ -46,7 +46,7 @@ function promptUserPurchase() {
                 filter: Number
             }
     ]).then(function(input) {
-		console.log('Customer has selected: \n    item_id = '  + input.item_id + '\n    quantity = ' + input.quantity);
+		// console.log("Customer has selected item_id:" + input.item_id + "quantity = " + input.quantity);
 
 		var item = input.item_id;
 		var quantity = input.quantity;
@@ -58,7 +58,7 @@ function promptUserPurchase() {
 			if (err) throw err;
 
 			// If the user has selected an invalid item ID, data attay will be empty
-			console.log('data = ' + JSON.stringify(data));
+			// console.log('data = ' + JSON.stringify(data));
 
 			if (data.length === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid Item ID.');
@@ -67,22 +67,19 @@ function promptUserPurchase() {
 			} else {
 				var productData = data[0];
 
-				console.log('productData = ' + JSON.stringify(productData));
-				console.log('productData.stock_quantity = ' + productData.stock_quantity);
-
 				// If the quantity requested by the user is in stock
 				if (quantity <= productData.stock_quantity) {
 					console.log('Congratulations, the product you requested is in stock! Placing order!');
 
 					// Construct the updating query string
 					var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (productData.stock_quantity - quantity) + ' WHERE item_id = ' + item;
-                    console.log('updateQueryStr = ' + updateQueryStr);
+                    // console.log('updateQueryStr = ' + updateQueryStr);
                 
 					// Update the inventory
 					connection.query(updateQueryStr, function(err, data) {
 						if (err) throw err;
 
-						console.log('Your oder has been placed! Your total is $' + productData.price * quantity);
+						console.log('Your order has been placed! Your total is $' + productData.price * quantity);
 						console.log('Thank you for shopping with us!');
 						console.log("\n---------------------------------------------------------------------\n");
 
@@ -103,7 +100,7 @@ function promptUserPurchase() {
 
 function displayInventory() {
 
-	console.log('___ENTER displayInventory___');
+	console.log('--- ENTER displayInventory ---');
 
 	// Construct the db query string
 	queryStr = 'SELECT * FROM products';
@@ -113,15 +110,15 @@ function displayInventory() {
 		if (err) throw err;
 
 		console.log('Existing Inventory: ');
-		console.log('...................\n');
+		console.log('----------------------\n');
 
 		var strOut = '';
 		for (var i = 0; i < data.length; i++) {
 			strOut = '';
-			strOut += 'Item ID: ' + data[i].item_id + '  //  ';
-			strOut += 'Product Name: ' + data[i].product_name + '  //  ';
-			strOut += 'Department: ' + data[i].department_name + '  //  ';
-			strOut += 'Price: $' + data[i].price + '\n';
+			strOut += 'Item #: ' + data[i].item_id + '  ||  '
+			strOut += 'Product: ' + data[i].product_name + '  ||  ';
+			strOut += 'Department: ' + data[i].department_name + '  ||  ';
+			strOut += '$' + data[i].price + '  ||  \n';
 
 			console.log(strOut);
 		}
