@@ -1,4 +1,5 @@
 -- Create a database called 'Bamazon' and switch into it for this activity --
+DROP DATABASE IF EXISTS Bamazon;
 CREATE DATABASE Bamazon;
 USE Bamazon;
 
@@ -18,8 +19,8 @@ VALUES  ('Curl Cream', 'Cosmetics', 15.75, 500),
 		('Coconut Conditioner', 'Cosmetics', 6.25, 627),
 		('2 Gal Bags', 'Grocery', 2.99, 300),
 		('Brawny Paper Towels', 'Grocery', 4.25, 400),
-		('Sony Noise Cancelling Headphones WH1000XM2', 'Electronics', 349.99, 800),
-		('Rokinon HD8M-C 8mm f/3.5 HD Fisheye Lens', 'Electronics', 197.00, 10000),
+		('Sony Noise Cancelling Headphones', 'Electronics', 349.99, 800),
+		('8mm f/3.5 HD Fisheye Lens', 'Electronics', 197.00, 10000),
 		('Orange Juice', 'Grocery', 5.50, 267),
 		('Ovaltine Chocolate Malt, 12 Ounce', 'Grocery', 3.78, 200),
 		('Lays Potato Chips Variety Pack, 40 Count', 'Grocery', 22.00, 476),
