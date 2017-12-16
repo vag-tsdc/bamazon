@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "bamazon-homework",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vag-tsdc/bamazon.git"
+  },
+  "author": "vag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vag-tsdc/bamazon/issues"
+  },
+  "homepage": "https://github.com/vag-tsdc/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^4.0.1",
+    "mysql": "^2.15.0"
+  }
+}
