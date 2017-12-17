@@ -14,6 +14,7 @@ var connection = mysql.createConnection({
 	password: '',
 	database: 'Bamazon'
 });
+
 function validateInput(value) {
 	var integer = Number.isInteger(parseFloat(value));
 	var sign = Math.sign(value);
@@ -28,37 +29,39 @@ function validateInput(value) {
 // promptUserPurchase will prompt the user for the item/quantity they would like to purchase
 function promptUserPurchase() {
 
-    console.log('--- promptUserPurchase ---');
-    
-    inquirer.prompt([
-            {
-                type: 'input',
-                name: 'item_id',
-                message: 'Please enter the Item ID which you would like to purchase.',
-                validate: validateInput,
-                filter: Number
-            },
-            {
-                type: 'input',
-                name: 'quantity',
-                message: 'How many do you need?',
-                validate: validateInput,
-                filter: Number
-            }
-    ]).then(function(input) {
-		// console.log("Customer has selected item_id:" + input.item_id + "quantity = " + input.quantity);
+	console.log('--- promptUserPurchase ---');
 
+	inquirer.prompt([{
+			type: 'input',
+			name: 'item_id',
+			message: 'Please enter the Item # you would like to purchase.',
+			validate: validateInput,
+			filter: Number
+		},
+		{
+			type: 'input',
+			name: 'quantity',
+			message: 'How many do you need?',
+			validate: validateInput,
+			filter: Number
+		}
+	]).then(function (input) {
+		// console.log("Customer has selected item_id:" + input.item_id + "quantity = " + input.quantity);
 		var item = input.item_id;
 		var quantity = input.quantity;
+
+		console.log("You chose: (" + quantity + ")" + "of" + item);
 
 		// Query db to confirm that the given item ID exists in the desired quantity
 		var queryStr = 'SELECT * FROM products WHERE ?';
 
-		connection.query(queryStr, {item_id: item}, function(err, data) {
+		connection.query(queryStr, {
+			item_id: item
+		}, function (err, data) {
 			if (err) throw err;
 
 			// If the user has selected an invalid item ID, data attay will be empty
-			// console.log('data = ' + JSON.stringify(data));
+			console.log('data = ' + JSON.stringify(data));
 
 			if (data.length === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid Item ID.');
@@ -70,17 +73,18 @@ function promptUserPurchase() {
 				// If the quantity requested by the user is in stock
 				if (quantity <= productData.stock_quantity) {
 					console.log('Congratulations, the product you requested is in stock! Placing order!');
-
+					console.log("this item:" + this.data);
 					// Construct the updating query string
 					var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (productData.stock_quantity - quantity) + ' WHERE item_id = ' + item;
-                    // console.log('updateQueryStr = ' + updateQueryStr);
-                
+					// console.log('updateQueryStr = ' + updateQueryStr);
+
 					// Update the inventory
-					connection.query(updateQueryStr, function(err, data) {
+					connection.query(updateQueryStr, function (err, data) {
 						if (err) throw err;
 
 						console.log('Your order has been placed! Your total is $' + productData.price * quantity);
 						console.log('Thank you for shopping with us!');
+						console.log('Please come back again soon!!');
 						console.log("\n---------------------------------------------------------------------\n");
 
 						// End the database connection
@@ -106,7 +110,7 @@ function displayInventory() {
 	queryStr = 'SELECT * FROM products';
 
 	// Make the db query
-	connection.query(queryStr, function(err, data) {
+	connection.query(queryStr, function (err, data) {
 		if (err) throw err;
 
 		console.log('Existing Inventory: ');
@@ -123,10 +127,10 @@ function displayInventory() {
 			console.log(strOut);
 		}
 
-	  	console.log("---------------------------------------------------------------------\n");
+		console.log("---------------------------------------------------------------------\n");
 
-	  	//Prompt the user for item/quantity they would like to purchase
-	  	promptUserPurchase();
+		//Prompt the user for item/quantity they would like to purchase
+		promptUserPurchase();
 	})
 }
 
@@ -134,8 +138,19 @@ function displayInventory() {
 function runBamazon() {
 	// console.log('___ENTER runBamazon___');
 
+
+	// Welcome the customer to the vag-amazon store!
+	// Ask customer if they are interested in viewing list of items
+
+	// if --> yes
 	// Display the available inventory
 	displayInventory();
+
+	// if --> no
+	// connection end
+
+
+
 }
 
 // Run the application logic
